@@ -4,9 +4,9 @@
 
 In the right margin, there is a link to the most recent release:
 
-[https://github.com/jonbeckett/virtualflightonlinetransmitter/releases/tag/transmitter](https://github.com/jonbeckett/virtualflightonlinetransmitter/releases/tag/transmitter)
+[https://github.com/jensbaumeister/virtualflightonlinetransmitter/releases/tag/transmitter](https://github.com/jensbaumeister/virtualflightonlinetransmitter/releases/tag/transmitter)
 
-Once installed and running, you will need to set the server URL within the Transmitter client application. VirtualFlight.Online no longer operates their own Transmitter server, but you are welcome to set your own up using the contents of the server folder (see "Running your own server" below).
+Once installed and running, you will need to set the server URL within the Transmitter client application. Unless you lnow someone whos is running a server, you will need to set your own up using the contents of the server folder (see "Running your own server" below).
 
 ## What is "Virtual Flight Online Transmitter" ?
 
@@ -73,4 +73,4 @@ If you would like to see everybody broadcasting their position with Virtual Flig
 
 ## Final note
 
-I don't really have time to look after Transmitter any more. It was always a stop-gap until Microsoft released a multiplayer location API - but they never have. I will answer questions about Transmitter, but please don't expect me to support your installations or modifications to the code.
+In its current state, about 99% of the code were created by Jon Beckett. ([Original repository](https://github.com/jonbeckett/virtualflightonlinetransmitter/)) Since he announced that he was not going to keep maintaining his code anymore, I created this fork to continue the work. Feel free to request changes or contribute.
