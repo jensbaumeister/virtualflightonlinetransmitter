@@ -12,6 +12,13 @@ namespace VirtualFlightOnlineTransmitter
     public partial class frmMain : Form
     {
 
+
+
+        /// <summary>
+        /// Timestamp to check whther whe should send data to the server
+        /// </summary>
+        private DateTime lastTransmission = new DateTime();
+
         /// <summary>
         /// Event handler to capture data received from SimConnect
         /// </summary>
@@ -153,54 +160,59 @@ namespace VirtualFlightOnlineTransmitter
         public string SendDataToServer(string aircraft_type, double latitude, double longitude, double heading, double altitude, double airspeed, double groundspeed, double touchdown_velocity, string transponder_code, string notes, string version)
         {
             string result = "";
-
-            try
+            DateTime nowTime = DateTime.Now;
+            if ((nowTime - lastTransmission).TotalSeconds > 1)
             {
-                // force the numbers into USA format
-                CultureInfo usa_format = new CultureInfo("en-US");
+                lastTransmission = nowTime;
 
-                string url = Properties.Settings.Default["ServerURL"].ToString()
-                    + "?Callsign=" + Properties.Settings.Default["Callsign"].ToString()
-                    + "&PilotName=" + Properties.Settings.Default["PilotName"].ToString()
-                    + "&GroupName=" + Properties.Settings.Default["GroupName"].ToString()
-                    + "&MSFSServer=" + Properties.Settings.Default["MSFSServer"].ToString()
-                    + "&Pin=" + Properties.Settings.Default["Pin"].ToString()
-                    + "&AircraftType=" + aircraft_type.ToString()
-                    + "&Latitude=" + latitude.ToString(usa_format)
-                    + "&Longitude=" + longitude.ToString(usa_format)
-                    + "&Altitude=" + altitude.ToString(usa_format)
-                    + "&Airspeed=" + airspeed.ToString(usa_format)
-                    + "&Groundspeed=" + groundspeed.ToString(usa_format)
-                    + "&Heading=" + heading.ToString(usa_format)
-                    + "&TouchdownVelocity=" + touchdown_velocity.ToString(usa_format)
-                    + "&TransponderCode=" + transponder_code
-                    + "&Version=" + version
-                    + "&Notes=" + System.Net.WebUtility.UrlEncode(notes);
-                            
-                var request = WebRequest.Create(url);
-                request.Method = "GET";
-                request.Timeout = 1000; // 1 second
-                
-                using (var webResponse = request.GetResponse())
+                try
                 {
-                    using (var webStream = webResponse.GetResponseStream())
+                    // force the numbers into USA format
+                    CultureInfo usa_format = new CultureInfo("en-US");
+
+                    string url = Properties.Settings.Default["ServerURL"].ToString()
+                        + "?Callsign=" + Properties.Settings.Default["Callsign"].ToString()
+                        + "&PilotName=" + Properties.Settings.Default["PilotName"].ToString()
+                        + "&GroupName=" + Properties.Settings.Default["GroupName"].ToString()
+                        + "&MSFSServer=" + Properties.Settings.Default["MSFSServer"].ToString()
+                        + "&Pin=" + Properties.Settings.Default["Pin"].ToString()
+                        + "&AircraftType=" + aircraft_type.ToString()
+                        + "&Latitude=" + latitude.ToString(usa_format)
+                        + "&Longitude=" + longitude.ToString(usa_format)
+                        + "&Altitude=" + Math.Round(altitude,0).ToString(usa_format)
+                        + "&Airspeed=" + Math.Round(airspeed,0).ToString(usa_format)
+                        + "&Groundspeed=" + Math.Round(groundspeed,0).ToString(usa_format)
+                        + "&Heading=" + Math.Round(heading,2).ToString(usa_format)
+                        + "&TouchdownVelocity=" + touchdown_velocity.ToString(usa_format)
+                        + "&TransponderCode=" + transponder_code
+                        + "&Version=" + version
+                        + "&Notes=" + System.Net.WebUtility.UrlEncode(notes);
+
+                    var request = WebRequest.Create(url);
+                    request.Method = "GET";
+                    request.Timeout = 1000; // 1 second
+
+                    using (var webResponse = request.GetResponse())
                     {
-                        using (var reader = new StreamReader(webStream))
+                        using (var webStream = webResponse.GetResponseStream())
                         {
-                            result = reader.ReadToEnd();
+                            using (var reader = new StreamReader(webStream))
+                            {
+                                result = reader.ReadToEnd();
+                            }
                         }
                     }
+
+                    // todo - catch "server not found" errors and report them
+
                 }
-
-                // todo - catch "server not found" errors and report them
-
-            } catch
-            {
-                // do nothing 
+                catch
+                {
+                    // do nothing 
+                }
             }
-                        
             return result;
-
+            
         }
 
 
@@ -278,9 +290,9 @@ namespace VirtualFlightOnlineTransmitter
             this.tbLatitude.Text = LatitudeToString(latitude);
             this.tbLongitude.Text = LongitudeToString(longitude);
             this.tbAltitude.Text = string.Format("{0:0. ft}", altitude);
-            this.tbHeading.Text = string.Format("{0:0. deg}", heading);
-            this.tbAirspeed.Text = string.Format("{0:0. knots}", airspeed);
-            this.tbGroundspeed.Text = string.Format("{0:0. knots}", groundspeed);
+            this.tbHeading.Text = string.Format("{0:0. deg}", Math.Round(heading,2));
+            this.tbAirspeed.Text = string.Format("{0:0. knots}", Math.Round(airspeed,0));
+            this.tbGroundspeed.Text = string.Format("{0:0. knots}", Math.Round(groundspeed,0));
             this.tbTouchdownVelocity.Text = string.Format("{0:0. ft/min}", touchdown_velocity * 60);
             
             string version = System.Windows.Forms.Application.ProductVersion;

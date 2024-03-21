@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Virtual Flight Online Transmitter")]
 [assembly: AssemblyDescription("https://virtualflight.online/transmitter")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Jonathan Beckett")]
+[assembly: AssemblyCompany("Jens Baumeister")]
 [assembly: AssemblyProduct("Virtual Flight Online Transmitter")]
-[assembly: AssemblyCopyright("Copyright ©  2023")]
+[assembly: AssemblyCopyright("Copyright ©  2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.1.16")]
-[assembly: AssemblyFileVersion("1.0.1.16")]
+[assembly: AssemblyVersion("1.0.1.18")]
+[assembly: AssemblyFileVersion("1.0.1.18")]
